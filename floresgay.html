@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Para Bianca 🌻</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{
+  font-family: Georgia, "Times New Roman", serif;
+  background:linear-gradient(#101b2e 0%,#263f4d 48%,#c77b45 100%);
+  color:#fff;
+  touch-action:manipulation;
+}
+.scene{position:relative;width:100%;height:100%;overflow:hidden}
+.stars{position:absolute;inset:0;opacity:0;animation:fadeIn 2s .3s forwards}
+.star{position:absolute;width:3px;height:3px;background:#fff;border-radius:50%;box-shadow:0 0 8px #fff;animation:twinkle 2.5s infinite}
+.moon{
+ position:absolute;top:10%;right:12%;width:58px;height:58px;border-radius:50%;
+ background:#fff7c7;box-shadow:0 0 35px #fff3a6;opacity:0;
+ animation:moonIn 2s 1s forwards;
+}
+.ground{
+ position:absolute;bottom:-2px;left:-5%;width:110%;height:25%;
+ background:#162b1d;border-radius:50% 50% 0 0/20% 20% 0 0;
+}
+.message{
+ position:absolute;z-index:20;top:15%;left:50%;transform:translateX(-50%);
+ width:90%;text-align:center;opacity:0;animation:messageIn 2s 5.7s forwards;
+}
+.message h1{margin:0 0 10px;font-size:clamp(32px,9vw,52px);font-weight:400;text-shadow:0 2px 15px #111}
+.message p{margin:0 auto;max-width:440px;font-size:clamp(17px,4.8vw,22px);line-height:1.5;text-shadow:0 1px 8px #111}
+.tap{
+ position:absolute;z-index:30;bottom:7%;left:50%;transform:translateX(-50%);
+ font:14px Arial,sans-serif;letter-spacing:2px;text-transform:uppercase;
+ opacity:0;animation:hint 2s 8s forwards;
+}
+.flower{position:absolute;z-index:10;bottom:13%;width:6px;height:0;background:#315f2c;border-radius:10px;transform-origin:bottom;animation:grow 2.2s forwards}
+.flower:after{
+ content:"";position:absolute;bottom:0;left:50%;width:18px;height:10px;
+ background:#3d7934;border-radius:100% 0 100% 0;transform:rotate(-28deg);
+ transform-origin:0 50%;
+}
+.bloom{
+ position:absolute;top:-17px;left:50%;width:42px;height:42px;
+ transform:translateX(-50%) scale(0);animation:bloom 1.2s 2s forwards;
+}
+.petal{position:absolute;width:19px;height:27px;background:#ffd83d;border-radius:55% 55% 45% 45%;left:12px;top:7px;transform-origin:9px 14px;box-shadow:0 0 8px #ffc928}
+.petal:nth-child(1){transform:rotate(0) translateY(-10px)}
+.petal:nth-child(2){transform:rotate(45deg) translateY(-10px)}
+.petal:nth-child(3){transform:rotate(90deg) translateY(-10px)}
+.petal:nth-child(4){transform:rotate(135deg) translateY(-10px)}
+.petal:nth-child(5){transform:rotate(180deg) translateY(-10px)}
+.petal:nth-child(6){transform:rotate(225deg) translateY(-10px)}
+.petal:nth-child(7){transform:rotate(270deg) translateY(-10px)}
+.petal:nth-child(8){transform:rotate(315deg) translateY(-10px)}
+.center{position:absolute;width:14px;height:14px;border-radius:50%;background:#8b5518;left:14px;top:14px;z-index:2}
+.float{
+ position:absolute;z-index:5;width:7px;height:7px;border-radius:50%;
+ background:#ffe78a;box-shadow:0 0 12px #fff1a8;opacity:0;
+ animation:floatUp 5s linear forwards;
+}
+@keyframes fadeIn{to{opacity:.85}}
+@keyframes moonIn{to{opacity:1}}
+@keyframes grow{from{height:0}to{height:var(--h)}}
+@keyframes bloom{to{transform:translateX(-50%) scale(1)}}
+@keyframes messageIn{from{opacity:0;transform:translateX(-50%) translateY(15px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes hint{to{opacity:.65}}
+@keyframes twinkle{50%{opacity:.25;transform:scale(.6)}}
+@keyframes floatUp{0%{opacity:0;transform:translateY(20px)}15%{opacity:.8}100%{opacity:0;transform:translateY(-90vh) translateX(35px)}}
+.tap-flower{
+  position:absolute;
+  z-index:100;
+  font-size:24px;
+  pointer-events:none;
+  transform:translate(-50%,-50%) scale(.2);
+  animation:tapBloom 1.6s ease-out forwards;
+  filter:drop-shadow(0 0 7px rgba(255,220,60,.8));
+}
+@keyframes tapBloom{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.2) rotate(0deg)}
+  15%{opacity:1}
+  100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.25) rotate(180deg)}
+}
+</style>
+</head>
+<body>
+<div class="scene" id="scene">
+  <div class="stars" id="stars"></div>
+  <div class="moon"></div>
+  <div class="message">
+    <h1>Feliz primavera, Bianca 🌻</h1>
+    <p>Ojalá pudiera estar con vos y darte todo<br> pero ahora te dejo esto que aprendí para vos. Te amo y te extraño muchisimo💛</p>
+  </div>
+  <div class="ground"></div>
+  <div class="tap">mirá apreta la pantalla aca 🌼</div>
+</div>
+
+<script>
+const scene=document.getElementById("scene");
+const stars=document.getElementById("stars");
+
+for(let i=0;i<65;i++){
+  const s=document.createElement("span");
+  s.className="star";
+  s.style.left=Math.random()*100+"%";
+  s.style.top=Math.random()*70+"%";
+  s.style.animationDelay=(Math.random()*3)+"s";
+  s.style.opacity=.25+Math.random()*.75;
+  stars.appendChild(s);
+}
+
+const flowers=[
+ [9,17,2.8],[18,24,3.7],[28,15,2.5],[38,30,4.2],[49,19,3.1],
+ [59,28,4.5],[70,14,3],[80,25,4],[90,17,3.4]
+];
+
+flowers.forEach(([x,h,d],i)=>{
+  const f=document.createElement("div");
+  f.className="flower";
+  f.style.left=x+"%";
+  f.style.setProperty("--h",h+"vh");
+  f.style.animationDelay=(1.2+i*.42)+"s";
+  const b=document.createElement("div");
+  b.className="bloom";
+  b.style.animationDelay=(3.0+i*.42)+"s";
+  for(let j=0;j<8;j++){
+    const p=document.createElement("i");
+    p.className="petal";
+    b.appendChild(p);
+  }
+  const c=document.createElement("i");
+  c.className="center";
+  b.appendChild(c);
+  f.appendChild(b);
+  scene.appendChild(f);
+});
+
+function spark(){
+  const x=Math.random()*100;
+  const dot=document.createElement("div");
+  dot.className="float";
+  dot.style.left=x+"%";
+  dot.style.bottom=(8+Math.random()*12)+"%";
+  dot.style.animationDuration=(4+Math.random()*3)+"s";
+  scene.appendChild(dot);
+  setTimeout(()=>dot.remove(),7000);
+}
+setInterval(spark,450);
+
+scene.addEventListener("click", e => {
+  // Explosión de pequeñas flores amarillas en el lugar donde se toca
+  for(let i=0;i<10;i++){
+    const flower = document.createElement("div");
+    flower.className = "tap-flower";
+    flower.textContent = "🌼";
+    flower.style.left = e.clientX + "px";
+    flower.style.top = e.clientY + "px";
+    flower.style.setProperty("--dx", (Math.random()*180-90) + "px");
+    flower.style.setProperty("--dy", (Math.random()*180-130) + "px");
+    flower.style.animationDelay = (i*35) + "ms";
+    scene.appendChild(flower);
+    setTimeout(()=>flower.remove(),1800);
+  }
+});
+</script>
+</body>
+</html>
